@@ -1,0 +1,60 @@
+﻿@model IEnumerable<LojaVirtual.Models.Produto>
+
+@{
+    ViewBag.Title = "Índice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .categoria-container {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        border: 2px solid #007BFF; /* Cor da borda azul, você pode alterar a cor aqui */
+        border-radius: 10px;
+    }
+
+    .produto-card {
+        display: inline-block;
+        width: calc(25% - 20px); /* Defina a largura do item para exibir quatro produtos por linha */
+        margin: 0 10px;
+        vertical-align: top;
+    }
+</style>
+
+<h2>Índice</h2>
+
+<p>
+    @Html.ActionLink("Criar Novo", "Create")
+</p>
+
+@{
+    var categorias = Model.GroupBy(p => p.Categoria.Nome);
+}
+
+@foreach (var categoria in categorias)
+{
+    <div class="categoria-container">
+        <h3>@categoria.Key</h3>
+        <div class="row">
+            @{
+                foreach (var item in categoria)
+                {
+                    <div class="produto-card">
+                        <div class="card mb-4">
+                                        <div class="card-body">
+                                            <img src="~/Views/Produto/img/iphone.jpg" class="card-img-top" alt="@item.Nome">
+                                            <h5 class="card-title">@item.Nome</h5>
+                                            <p class="card-text">@item.Descricao</p>
+                                            <p class="card-text">Preço: R$@item.Valor</p>
+                                            <p class="card-text">Preço Atual: R$@item.ValorAtual</p>
+                                            <p class="card-text">Categoria: @item.Categoria.Nome</p>
+                                            <a href="@Url.Action("Details", "Details", new { id = item.ProdutoID })" class="btn btn-primary">Detalhes</a>
+                                        </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
